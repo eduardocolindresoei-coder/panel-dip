@@ -399,7 +399,7 @@ body{font-family:'Georgia',serif;background:var(--navy);color:var(--text);displa
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js" onerror="console.warn('PptxGenJS no disponible')"></script>
 <script>
   {n:"I",t:"Introducción al DIP",s:["Concepto, características y fundamentos","Relaciones DIP y derecho interno","Monismo y dualismo (Arts. 144-149 Cn. SV)","Historia y evolución del DIP"]},
   {n:"II",t:"Sujetos del DIP",s:["Estado como sujeto principal","Organizaciones internacionales","Individuo en el DIP contemporáneo","Subjetividad internacional"]},
@@ -848,7 +848,14 @@ La primera diapositiva es portada, la última es cierre/conclusiones.`;
 function descargarPPTX() {
   if(!pptxData){ alert('Primero genere el contenido.'); return; }
   const status=document.getElementById('p-status');
-  status.textContent='⏳ Creando archivo PPTX...'; status.style.display='block';
+  status.textContent='⏳ Cargando librería PPTX...'; status.style.display='block';
+
+  function crearPPTX() {
+    if(typeof PptxGenJS === 'undefined'){
+      status.textContent='⚠️ Error: No se pudo cargar la librería PPTX. Verifique su conexión.';
+      return;
+    }
+    status.textContent='⏳ Creando archivo PPTX...';
 
   const NAVY='0D1B2E', NAVY2='1A3A5C', GOLD='C9A227', WHITE='FFFFFF', LGOLD='FDF6E3';
   const pres=new PptxGenJS();
@@ -901,6 +908,17 @@ function descargarPPTX() {
   const nomArchivo=(tema||'presentacion').replace(/[^a-z0-9]/gi,'_').toLowerCase()+'_'+unidad.replace(/[^a-z0-9]/gi,'_').toLowerCase()+'.pptx';
   pres.writeFile({fileName:nomArchivo});
   status.textContent='✅ Archivo descargado: '+nomArchivo;
+  }
+
+  if(typeof PptxGenJS !== 'undefined'){
+    crearPPTX();
+  } else {
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js';
+    script.onload = crearPPTX;
+    script.onerror = ()=>{ status.textContent='⚠️ Error cargando librería. Verifique su conexión.'; };
+    document.head.appendChild(script);
+  }
 }
 
 init();
