@@ -228,7 +228,24 @@ function sendMessage(){
   ask(t);
 }
 
-async function ask(text){
+try {
+    const geminiMsgs = msgs.map(m => ({
+      role: m.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: m.content }]
+    }));
+
+    const r = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${apiKey}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: SYS }] },
+        contents: geminiMsgs,
+        generationConfig: { maxOutputTokens: 1500 }
+      })
+    });
+    
+    const d = await r.json();
+    // ... resto del código para manejar la respuesta
   if(loading)return;
   loading=true;
   document.getElementById('send-btn').disabled=true;
