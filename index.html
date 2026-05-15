@@ -247,7 +247,7 @@ async function ask(text){
     const d=await r.json();
     if(d.error){msgs.push({role:'assistant',content:'Error: '+d.error.message});}
     else{msgs.push({role:'assistant',content:d.content[0].text});}
-  }catch(e){msgs.push({role:'assistant',content:'Error de red. Verifique su conexión e intente nuevamente.']);}
+  }catch(e){msgs.push({role:'assistant',content:'Error de red. Verifique su conexión e intente nuevamente.'});}
   loading=false;
   document.getElementById('send-btn').disabled=false;
   renderChat();
