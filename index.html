@@ -102,6 +102,43 @@ body{font-family:'Georgia',serif;background:var(--navy);color:var(--text);displa
 .tag-sv{background:rgba(0,50,20,0.6);color:#7EC87E;border:1px solid rgba(126,200,126,0.28)}
 .bib-link{font-size:10px;color:rgba(201,162,39,0.45);font-family:sans-serif}
 .bib-section-title{font-size:10px;color:var(--gold);font-family:sans-serif;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin:22px 0 10px;opacity:.65;padding-bottom:6px;border-bottom:1px solid var(--border)}
+
+/* ── HERRAMIENTAS ─────────────────────────────────────────── */
+.herramientas{flex:1;overflow-y:auto;padding:22px;display:flex;flex-direction:column;gap:0}
+.herramientas::-webkit-scrollbar{width:4px}
+.herramientas::-webkit-scrollbar-thumb{background:rgba(201,162,39,0.15);border-radius:2px}
+.h-header{font-size:18px;color:var(--gold);font-family:'Georgia',serif;margin-bottom:6px;font-weight:normal}
+.h-desc{font-size:12px;color:var(--muted);font-family:sans-serif;margin-bottom:20px;line-height:1.65}
+.h-tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap}
+.h-tab{padding:7px 16px;border:1px solid var(--border);border-radius:20px;font-size:12px;font-family:sans-serif;color:var(--muted);cursor:pointer;background:none;transition:all .2s}
+.h-tab:hover{border-color:rgba(201,162,39,0.4);color:var(--gold-l)}
+.h-tab.active{background:rgba(201,162,39,0.12);border-color:var(--gold);color:var(--gold);font-weight:600}
+.h-tool{display:none;flex-direction:column;gap:14px;flex:1}
+.h-tool.active{display:flex}
+.h-form{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px}
+.h-form-title{font-size:13px;color:var(--gold);font-family:sans-serif;font-weight:700;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.h-row{display:grid;gap:12px}
+.h-row-2{grid-template-columns:1fr 1fr}
+.h-row-3{grid-template-columns:1fr 1fr 1fr}
+.h-field{display:flex;flex-direction:column;gap:5px}
+.h-label{font-size:11px;color:var(--muted);font-family:sans-serif;font-weight:600;letter-spacing:.3px}
+.h-input,.h-select,.h-textarea{background:rgba(255,255,255,0.05);border:1px solid rgba(201,162,39,0.2);border-radius:8px;padding:9px 12px;color:var(--text);font-size:12px;font-family:sans-serif;outline:none;transition:border .2s;width:100%}
+.h-input:focus,.h-select:focus,.h-textarea:focus{border-color:rgba(201,162,39,0.55)}
+.h-select option{background:var(--navy2);color:var(--text)}
+.h-textarea{resize:vertical;min-height:70px;line-height:1.5}
+.h-btn{background:var(--gold);color:var(--navy);border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-family:sans-serif;font-weight:700;cursor:pointer;transition:background .2s;letter-spacing:.3px;align-self:flex-start}
+.h-btn:hover{background:var(--gold-l)}
+.h-btn:disabled{opacity:.35;cursor:not-allowed}
+.h-output{background:#0a1a2e;border:1px solid rgba(201,162,39,0.15);border-radius:var(--radius);padding:18px;display:none;flex-direction:column;gap:12px;flex:1;min-height:200px}
+.h-output.visible{display:flex}
+.h-output-header{display:flex;align-items:center;justify-content:space-between}
+.h-output-title{font-size:11px;color:var(--gold);font-family:sans-serif;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.h-output-actions{display:flex;gap:8px}
+.h-action-btn{background:rgba(201,162,39,0.1);border:1px solid rgba(201,162,39,0.25);border-radius:6px;padding:5px 12px;font-size:11px;font-family:sans-serif;color:var(--gold);cursor:pointer;transition:background .2s}
+.h-action-btn:hover{background:rgba(201,162,39,0.2)}
+.h-output-content{color:#d8d4c8;font-size:12.5px;font-family:'Georgia',serif;line-height:1.75;white-space:pre-wrap;overflow-y:auto;flex:1}
+.h-loading{display:none;align-items:center;gap:10px;color:var(--muted);font-size:12px;font-family:sans-serif;padding:8px 0}
+.h-loading.visible{display:flex}
 </style>
 </head>
 <body>
@@ -125,6 +162,7 @@ body{font-family:'Georgia',serif;background:var(--navy);color:var(--text);displa
     <button class="tab-btn active" onclick="switchTab('dip')">DIP</button>
     <button class="tab-btn" onclick="switchTab('dipr')">DIPr</button>
     <button class="tab-btn" onclick="switchTab('biblioteca')">Biblioteca</button>
+    <button class="tab-btn" onclick="switchTab('herramientas')">🛠 Herramientas</button>
   </div>
   <button class="key-btn-sm" onclick="changeKey()">🔑 API Key</button>
 </div>
@@ -156,10 +194,213 @@ body{font-family:'Georgia',serif;background:var(--navy);color:var(--text);displa
     <div class="bib-desc">Principales tratados, convenciones y fuentes del Derecho Internacional aplicables al programa de DIP y DIPr · Universidad Centroamericana José Simeón Cañas</div>
     <div id="bib-content"></div>
   </div>
+
+  <!-- HERRAMIENTAS DOCENTES -->
+  <div class="main herramientas" id="herramientas-panel" style="display:none">
+    <div class="h-header">Herramientas Docentes</div>
+    <div class="h-desc">Genere mallas curriculares, rúbricas, evaluaciones y presentaciones con asistencia de IA · DIP / DIPr · UCA</div>
+    <div class="h-tabs">
+      <button class="h-tab active" onclick="switchHTool('malla')">📋 Malla Curricular</button>
+      <button class="h-tab" onclick="switchHTool('rubrica')">📊 Rúbrica</button>
+      <button class="h-tab" onclick="switchHTool('evaluacion')">📝 Evaluación</button>
+      <button class="h-tab" onclick="switchHTool('pptx')">📊 Presentación PPTX</button>
+    </div>
+
+    <!-- MALLA CURRICULAR -->
+    <div class="h-tool active" id="h-malla">
+      <div class="h-form">
+        <div class="h-form-title">📋 Generador de Malla Curricular</div>
+        <div class="h-row h-row-2">
+          <div class="h-field"><label class="h-label">ASIGNATURA</label><input class="h-input" id="m-asig" placeholder="Ej. Derecho Internacional Público" value="Derecho Internacional Público"></div>
+          <div class="h-field"><label class="h-label">CARRERA</label><input class="h-input" id="m-carrera" placeholder="Ej. Ciencias Jurídicas" value="Ciencias Jurídicas"></div>
+        </div>
+        <div class="h-row h-row-3" style="margin-top:12px">
+          <div class="h-field"><label class="h-label">CICLO / SEMESTRE</label><input class="h-input" id="m-ciclo" placeholder="Ej. 01/2026" value="01/2026"></div>
+          <div class="h-field"><label class="h-label">HORAS/SEMANA</label><input class="h-input" id="m-horas" placeholder="Ej. 3" value="3"></div>
+          <div class="h-field"><label class="h-label">UNIDADES TEMÁTICAS</label><input class="h-input" id="m-unidades" placeholder="Ej. 8" value="8"></div>
+        </div>
+        <div class="h-row" style="margin-top:12px">
+          <div class="h-field"><label class="h-label">OBJETIVOS GENERALES (opcional)</label><textarea class="h-textarea" id="m-objetivos" placeholder="Ej. Comprender los fundamentos del DIP, analizar fuentes y jurisprudencia..."></textarea></div>
+        </div>
+        <div class="h-row" style="margin-top:12px">
+          <div class="h-field"><label class="h-label">UNIDADES A INCLUIR (una por línea, opcional)</label><textarea class="h-textarea" id="m-contenido" placeholder="Ej.&#10;Introducción al DIP&#10;Fuentes del DIP&#10;Sujetos del DIP..."></textarea></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center">
+          <button class="h-btn" onclick="generarMalla()">Generar Malla Curricular</button>
+          <div class="h-loading" id="m-loading"><div class="typing" style="padding:6px 10px;border-radius:8px"><span></span><span></span><span></span></div> Generando...</div>
+        </div>
+      </div>
+      <div class="h-output" id="m-output">
+        <div class="h-output-header">
+          <span class="h-output-title">Malla Curricular Generada</span>
+          <div class="h-output-actions">
+            <button class="h-action-btn" onclick="copiarOutput('m-content')">📋 Copiar</button>
+          </div>
+        </div>
+        <div class="h-output-content" id="m-content"></div>
+      </div>
+    </div>
+
+    <!-- RÚBRICA -->
+    <div class="h-tool" id="h-rubrica">
+      <div class="h-form">
+        <div class="h-form-title">📊 Generador de Rúbrica de Evaluación</div>
+        <div class="h-row h-row-2">
+          <div class="h-field"><label class="h-label">ACTIVIDAD A EVALUAR</label><input class="h-input" id="r-actividad" placeholder="Ej. Ensayo académico sobre la CVDT"></div>
+          <div class="h-field"><label class="h-label">TIPO DE ACTIVIDAD</label>
+            <select class="h-select" id="r-tipo">
+              <option>Ensayo académico</option>
+              <option>Exposición oral</option>
+              <option>Análisis de caso jurídico</option>
+              <option>Trabajo de investigación</option>
+              <option>Participación en clase</option>
+              <option>Examen escrito</option>
+              <option>Trabajo en equipo</option>
+            </select>
+          </div>
+        </div>
+        <div class="h-row h-row-3" style="margin-top:12px">
+          <div class="h-field"><label class="h-label">ASIGNATURA</label>
+            <select class="h-select" id="r-asig">
+              <option>Derecho Internacional Público</option>
+              <option>Derecho Internacional Privado</option>
+              <option>Ambas</option>
+            </select>
+          </div>
+          <div class="h-field"><label class="h-label">NIVEL</label>
+            <select class="h-select" id="r-nivel">
+              <option>Universitario pregrado</option>
+              <option>Posgrado / Maestría</option>
+            </select>
+          </div>
+          <div class="h-field"><label class="h-label">ESCALA DE NOTAS</label>
+            <select class="h-select" id="r-escala">
+              <option>0 – 10</option>
+              <option>0 – 100</option>
+              <option>Insuficiente / Suficiente / Bueno / Excelente</option>
+            </select>
+          </div>
+        </div>
+        <div class="h-row" style="margin-top:12px">
+          <div class="h-field"><label class="h-label">CRITERIOS ESPECÍFICOS (opcional)</label><textarea class="h-textarea" id="r-criterios" placeholder="Ej. Argumentación jurídica, uso de fuentes, claridad expositiva..."></textarea></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center">
+          <button class="h-btn" onclick="generarRubrica()">Generar Rúbrica</button>
+          <div class="h-loading" id="r-loading"><div class="typing" style="padding:6px 10px;border-radius:8px"><span></span><span></span><span></span></div> Generando...</div>
+        </div>
+      </div>
+      <div class="h-output" id="r-output">
+        <div class="h-output-header">
+          <span class="h-output-title">Rúbrica Generada</span>
+          <div class="h-output-actions">
+            <button class="h-action-btn" onclick="copiarOutput('r-content')">📋 Copiar</button>
+          </div>
+        </div>
+        <div class="h-output-content" id="r-content"></div>
+      </div>
+    </div>
+
+    <!-- EVALUACIÓN -->
+    <div class="h-tool" id="h-evaluacion">
+      <div class="h-form">
+        <div class="h-form-title">📝 Generador de Evaluaciones</div>
+        <div class="h-row h-row-2">
+          <div class="h-field"><label class="h-label">TEMA DE LA EVALUACIÓN</label><input class="h-input" id="e-tema" placeholder="Ej. Fuentes del DIP, CVDT, Jus Cogens"></div>
+          <div class="h-field"><label class="h-label">ASIGNATURA</label>
+            <select class="h-select" id="e-asig">
+              <option>Derecho Internacional Público</option>
+              <option>Derecho Internacional Privado</option>
+            </select>
+          </div>
+        </div>
+        <div class="h-row h-row-3" style="margin-top:12px">
+          <div class="h-field"><label class="h-label">TIPO DE EVALUACIÓN</label>
+            <select class="h-select" id="e-tipo">
+              <option>Examen parcial</option>
+              <option>Examen final</option>
+              <option>Quiz / Prueba corta</option>
+              <option>Banco de preguntas</option>
+              <option>Caso práctico</option>
+            </select>
+          </div>
+          <div class="h-field"><label class="h-label">FORMATO</label>
+            <select class="h-select" id="e-formato">
+              <option>Mixto (opción múltiple + desarrollo)</option>
+              <option>Solo opción múltiple</option>
+              <option>Solo preguntas de desarrollo</option>
+              <option>Completar / Verdadero-Falso</option>
+              <option>Análisis de caso</option>
+            </select>
+          </div>
+          <div class="h-field"><label class="h-label">Nº DE PREGUNTAS</label><input class="h-input" id="e-num" type="number" min="3" max="40" value="15"></div>
+        </div>
+        <div class="h-row" style="margin-top:12px">
+          <div class="h-field"><label class="h-label">TEMAS ESPECÍFICOS A INCLUIR (opcional)</label><textarea class="h-textarea" id="e-temas" placeholder="Ej. Art. 38 CIJ, jus cogens, pacta sunt servanda, caso Trail Smelter..."></textarea></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center">
+          <button class="h-btn" onclick="generarEvaluacion()">Generar Evaluación</button>
+          <div class="h-loading" id="e-loading"><div class="typing" style="padding:6px 10px;border-radius:8px"><span></span><span></span><span></span></div> Generando...</div>
+        </div>
+      </div>
+      <div class="h-output" id="e-output">
+        <div class="h-output-header">
+          <span class="h-output-title">Evaluación Generada</span>
+          <div class="h-output-actions">
+            <button class="h-action-btn" onclick="copiarOutput('e-content')">📋 Copiar</button>
+          </div>
+        </div>
+        <div class="h-output-content" id="e-content"></div>
+      </div>
+    </div>
+
+    <!-- PPTX -->
+    <div class="h-tool" id="h-pptx">
+      <div class="h-form">
+        <div class="h-form-title">📊 Generador de Presentación PPTX</div>
+        <div class="h-row h-row-2">
+          <div class="h-field"><label class="h-label">TEMA DE LA PRESENTACIÓN</label><input class="h-input" id="p-tema" placeholder="Ej. Fuentes del Derecho Internacional Público"></div>
+          <div class="h-field"><label class="h-label">ASIGNATURA</label>
+            <select class="h-select" id="p-asig">
+              <option>Derecho Internacional Público</option>
+              <option>Derecho Internacional Privado</option>
+            </select>
+          </div>
+        </div>
+        <div class="h-row h-row-3" style="margin-top:12px">
+          <div class="h-field"><label class="h-label">UNIDAD</label><input class="h-input" id="p-unidad" placeholder="Ej. Unidad III"></div>
+          <div class="h-field"><label class="h-label">Nº DE DIAPOSITIVAS</label><input class="h-input" id="p-slides" type="number" min="5" max="20" value="10"></div>
+          <div class="h-field"><label class="h-label">NIVEL DE DETALLE</label>
+            <select class="h-select" id="p-detalle">
+              <option>Medio (clase magistral)</option>
+              <option>Detallado (material de estudio)</option>
+              <option>Resumen ejecutivo</option>
+            </select>
+          </div>
+        </div>
+        <div class="h-row" style="margin-top:12px">
+          <div class="h-field"><label class="h-label">SUBTEMAS A INCLUIR (opcional)</label><textarea class="h-textarea" id="p-subtemas" placeholder="Ej. Art. 38 CIJ, tratados, costumbre, principios generales, jus cogens..."></textarea></div>
+        </div>
+        <div style="margin-top:14px;display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+          <button class="h-btn" onclick="generarPPTX()">Generar y Descargar PPTX</button>
+          <div class="h-loading" id="p-loading"><div class="typing" style="padding:6px 10px;border-radius:8px"><span></span><span></span><span></span></div> Generando contenido...</div>
+        </div>
+        <div id="p-status" style="font-size:11px;color:var(--gold-l);font-family:sans-serif;margin-top:8px;display:none"></div>
+      </div>
+      <div class="h-output" id="p-output">
+        <div class="h-output-header">
+          <span class="h-output-title">Estructura de la Presentación</span>
+          <div class="h-output-actions">
+            <button class="h-action-btn" id="p-download-btn" onclick="descargarPPTX()" style="display:none">⬇ Descargar PPTX</button>
+          </div>
+        </div>
+        <div class="h-output-content" id="p-content"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pptxgenjs/3.12.0/pptxgen.bundle.js"></script>
 <script>
-const UNITS_DIP=[
   {n:"I",t:"Introducción al DIP",s:["Concepto, características y fundamentos","Relaciones DIP y derecho interno","Monismo y dualismo (Arts. 144-149 Cn. SV)","Historia y evolución del DIP"]},
   {n:"II",t:"Sujetos del DIP",s:["Estado como sujeto principal","Organizaciones internacionales","Individuo en el DIP contemporáneo","Subjetividad internacional"]},
   {n:"III",t:"Fuentes del DIP",s:["Art. 38 Estatuto CIJ","Tratados internacionales","Costumbre internacional","Principios generales del derecho","Jurisprudencia y doctrina","CVDT (Viena 1969)","Jus cogens y obligaciones erga omnes"]},
@@ -268,12 +509,13 @@ function pickSub(prefix,i,j){
 
 function switchTab(tab){
   currentTab=tab;
-  document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',['dip','dipr','biblioteca'][i]===tab);});
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{b.classList.toggle('active',['dip','dipr','biblioteca','herramientas'][i]===tab);});
   document.getElementById('sidebar-dip').style.display=tab==='dip'?'flex':'none';
   document.getElementById('sidebar-dipr').style.display=tab==='dipr'?'flex':'none';
-  document.getElementById('main-panel').style.display=tab!=='biblioteca'?'flex':'none';
-  document.getElementById('biblioteca-panel').style.display=tab==='biblioteca'?'block':'none';
-  if(tab!=='biblioteca'){
+  document.getElementById('main-panel').style.display=(tab==='dip'||tab==='dipr')?'flex':'none';
+  document.getElementById('biblioteca-panel').style.display=tab==='biblioteca'?'flex':'none';
+  document.getElementById('herramientas-panel').style.display=tab==='herramientas'?'flex':'none';
+  if(tab==='dip'||tab==='dipr'){
     document.getElementById('topic-title').textContent='Panel de Análisis Jurídico';
     document.getElementById('topic-sub').textContent=tab==='dip'?'Derecho Internacional Público · UCA':'Derecho Internacional Privado · UCA';
     msgs=[];selSub=null;renderChat();
@@ -390,6 +632,275 @@ function buildBiblioteca(){
         </div>
       </div>`).join('')}
     </div>`).join('');
+}
+
+/* ── HERRAMIENTAS ─────────────────────────────────────────── */
+let pptxData = null;
+
+function switchHTool(tool) {
+  document.querySelectorAll('.h-tab').forEach((b,i)=>{b.classList.toggle('active',['malla','rubrica','evaluacion','pptx'][i]===tool);});
+  document.querySelectorAll('.h-tool').forEach(t=>t.classList.remove('active'));
+  document.getElementById('h-'+tool).classList.add('active');
+}
+
+function copiarOutput(id) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(()=>{
+    const btn = el.closest('.h-output').querySelector('.h-action-btn');
+    const orig = btn.textContent; btn.textContent = '✓ Copiado!';
+    setTimeout(()=>btn.textContent=orig, 2000);
+  });
+}
+
+async function llamarIA(prompt, sistemaExtra='') {
+  const sys = `Eres un asistente académico especializado en Derecho Internacional Público y Privado, orientado a la docencia universitaria en la Universidad Centroamericana José Simeón Cañas (UCA) de El Salvador. Elaboras materiales académicos de alta calidad en español formal y académico. ${sistemaExtra}`;
+  const r = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+    body: JSON.stringify({model:'claude-sonnet-4-6',max_tokens:3000,system:sys,messages:[{role:'user',content:prompt}]})
+  });
+  const d = await r.json();
+  if (d.error) throw new Error(d.error.message);
+  return d.content[0].text;
+}
+
+async function generarMalla() {
+  const asig=document.getElementById('m-asig').value||'Derecho Internacional Público';
+  const carrera=document.getElementById('m-carrera').value||'Ciencias Jurídicas';
+  const ciclo=document.getElementById('m-ciclo').value||'01/2026';
+  const horas=document.getElementById('m-horas').value||'3';
+  const unidades=document.getElementById('m-unidades').value||'8';
+  const objetivos=document.getElementById('m-objetivos').value;
+  const contenido=document.getElementById('m-contenido').value;
+  const btn=document.querySelector('#h-malla .h-btn');
+  const loading=document.getElementById('m-loading');
+  const output=document.getElementById('m-output');
+  const content=document.getElementById('m-content');
+  btn.disabled=true; loading.classList.add('visible');
+  try {
+    const prompt=`Elabora una malla curricular completa y detallada para:
+ASIGNATURA: ${asig}
+CARRERA: ${carrera}
+CICLO: ${ciclo}
+HORAS POR SEMANA: ${horas}
+NÚMERO DE UNIDADES: ${unidades}
+${objetivos?'OBJETIVOS GENERALES: '+objetivos:''}
+${contenido?'UNIDADES A INCLUIR:\n'+contenido:''}
+INSTITUCIÓN: Universidad Centroamericana José Simeón Cañas (UCA), El Salvador.
+
+La malla debe incluir:
+1. Datos generales de la asignatura
+2. Descripción general del curso
+3. Objetivos generales y específicos
+4. Competencias a desarrollar
+5. Tabla de contenidos por unidad (con objetivos, temas, horas y metodología)
+6. Sistema de evaluación (con porcentajes)
+7. Bibliografía básica y complementaria
+8. Metodología general de enseñanza-aprendizaje
+
+Usa formato estructurado con secciones claramente definidas.`;
+    const resultado = await llamarIA(prompt);
+    content.textContent = resultado;
+    output.classList.add('visible');
+  } catch(e){ content.textContent='⚠️ Error: '+e.message; output.classList.add('visible'); }
+  btn.disabled=false; loading.classList.remove('visible');
+}
+
+async function generarRubrica() {
+  const actividad=document.getElementById('r-actividad').value||'Ensayo académico';
+  const tipo=document.getElementById('r-tipo').value;
+  const asig=document.getElementById('r-asig').value;
+  const nivel=document.getElementById('r-nivel').value;
+  const escala=document.getElementById('r-escala').value;
+  const criterios=document.getElementById('r-criterios').value;
+  const btn=document.querySelector('#h-rubrica .h-btn');
+  const loading=document.getElementById('r-loading');
+  const output=document.getElementById('r-output');
+  const content=document.getElementById('r-content');
+  btn.disabled=true; loading.classList.add('visible');
+  try {
+    const prompt=`Elabora una rúbrica de evaluación detallada para:
+ACTIVIDAD: ${actividad}
+TIPO: ${tipo}
+ASIGNATURA: ${asig}
+NIVEL: ${nivel}
+ESCALA: ${escala}
+${criterios?'CRITERIOS ESPECÍFICOS: '+criterios:''}
+INSTITUCIÓN: UCA El Salvador.
+
+La rúbrica debe:
+1. Tener entre 5 y 7 criterios de evaluación relevantes para la actividad
+2. Incluir 4 niveles de desempeño (Excelente, Bueno, Regular, Insuficiente) con descriptores claros
+3. Asignar puntajes o porcentajes a cada criterio y nivel
+4. Presentarse en formato de tabla clara y legible (usar caracteres de texto para la tabla)
+5. Incluir una sección de observaciones generales
+6. Ser apropiada para la disciplina jurídica y el nivel universitario
+
+Adapta los criterios específicamente a ${asig} y al tipo de actividad.`;
+    const resultado = await llamarIA(prompt);
+    content.textContent = resultado;
+    output.classList.add('visible');
+  } catch(e){ content.textContent='⚠️ Error: '+e.message; output.classList.add('visible'); }
+  btn.disabled=false; loading.classList.remove('visible');
+}
+
+async function generarEvaluacion() {
+  const tema=document.getElementById('e-tema').value||'Fuentes del Derecho Internacional Público';
+  const asig=document.getElementById('e-asig').value;
+  const tipo=document.getElementById('e-tipo').value;
+  const formato=document.getElementById('e-formato').value;
+  const num=document.getElementById('e-num').value||'15';
+  const temas=document.getElementById('e-temas').value;
+  const btn=document.querySelector('#h-evaluacion .h-btn');
+  const loading=document.getElementById('e-loading');
+  const output=document.getElementById('e-output');
+  const content=document.getElementById('e-content');
+  btn.disabled=true; loading.classList.add('visible');
+  try {
+    const prompt=`Elabora un instrumento de evaluación completo:
+ASIGNATURA: ${asig}
+TEMA: ${tema}
+TIPO: ${tipo}
+FORMATO: ${formato}
+NÚMERO DE PREGUNTAS: ${num}
+${temas?'TEMAS ESPECÍFICOS: '+temas:''}
+INSTITUCIÓN: UCA El Salvador, Ciencias Jurídicas.
+
+El instrumento debe:
+1. Incluir encabezado institucional con espacio para datos del estudiante
+2. Instrucciones claras para cada sección
+3. Preguntas de calidad académica universitaria con rigor jurídico
+4. Si incluye opción múltiple: 4 opciones por pregunta, solo una correcta
+5. Si incluye desarrollo: preguntas que exijan análisis, síntesis y aplicación
+6. Clave de respuestas o criterios de corrección al final
+7. Distribución de puntos clara
+8. Para DIP: citar artículos, convenios y jurisprudencia relevante
+9. Para DIPr: incluir problemas con elementos extranjeros y conflictos de leyes`;
+    const resultado = await llamarIA(prompt);
+    content.textContent = resultado;
+    output.classList.add('visible');
+  } catch(e){ content.textContent='⚠️ Error: '+e.message; output.classList.add('visible'); }
+  btn.disabled=false; loading.classList.remove('visible');
+}
+
+async function generarPPTX() {
+  const tema=document.getElementById('p-tema').value||'Fuentes del Derecho Internacional Público';
+  const asig=document.getElementById('p-asig').value;
+  const unidad=document.getElementById('p-unidad').value||'Unidad III';
+  const slides=parseInt(document.getElementById('p-slides').value)||10;
+  const detalle=document.getElementById('p-detalle').value;
+  const subtemas=document.getElementById('p-subtemas').value;
+  const btn=document.querySelector('#h-pptx .h-btn');
+  const loading=document.getElementById('p-loading');
+  const status=document.getElementById('p-status');
+  const output=document.getElementById('p-output');
+  const content=document.getElementById('p-content');
+  const dlBtn=document.getElementById('p-download-btn');
+  btn.disabled=true; loading.classList.add('visible'); status.style.display='none';
+  try {
+    const prompt=`Genera el contenido estructurado para una presentación de ${slides} diapositivas sobre:
+TEMA: ${tema}
+ASIGNATURA: ${asig}
+UNIDAD: ${unidad}
+NIVEL DE DETALLE: ${detalle}
+${subtemas?'SUBTEMAS A INCLUIR: '+subtemas:''}
+INSTITUCIÓN: UCA El Salvador.
+
+Responde ÚNICAMENTE con JSON válido (sin markdown, sin texto adicional) con esta estructura exacta:
+{
+  "titulo": "Título principal de la presentación",
+  "subtitulo": "Subtítulo o descripción",
+  "slides": [
+    {
+      "numero": 1,
+      "tipo": "portada",
+      "titulo": "Título de la diapositiva",
+      "contenido": ["Punto 1", "Punto 2", "Punto 3"],
+      "nota": "Nota del presentador opcional"
+    }
+  ]
+}
+
+Tipos de diapositiva: "portada", "contenido", "concepto", "tabla", "jurisprudencia", "cierre"
+Cada diapositiva de contenido debe tener entre 3-5 puntos concisos.
+La primera diapositiva es portada, la última es cierre/conclusiones.`;
+
+    status.textContent = '⏳ Generando estructura con IA...'; status.style.display='block';
+    const resultado = await llamarIA(prompt, 'Cuando generes JSON, responde ÚNICAMENTE con el JSON puro, sin bloques de código markdown ni texto adicional.');
+    let datos;
+    try {
+      const clean = resultado.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
+      datos = JSON.parse(clean);
+    } catch(pe) {
+      throw new Error('Error al parsear estructura. Inténtelo de nuevo.');
+    }
+    pptxData = datos;
+    content.textContent = `✅ Estructura generada: "${datos.titulo}"\n\n` +
+      datos.slides.map((s,i)=>`Diapositiva ${i+1}: ${s.titulo}\n${s.contenido.map(p=>'  • '+p).join('\n')}`).join('\n\n');
+    output.classList.add('visible');
+    dlBtn.style.display='inline-block';
+    status.textContent = '✅ Listo. Haga clic en "Descargar PPTX" para obtener el archivo.';
+
+  } catch(e){ content.textContent='⚠️ Error: '+e.message; output.classList.add('visible'); status.style.display='none'; }
+  btn.disabled=false; loading.classList.remove('visible');
+}
+
+function descargarPPTX() {
+  if(!pptxData){ alert('Primero genere el contenido.'); return; }
+  const status=document.getElementById('p-status');
+  status.textContent='⏳ Creando archivo PPTX...'; status.style.display='block';
+
+  const NAVY='0D1B2E', NAVY2='1A3A5C', GOLD='C9A227', WHITE='FFFFFF', LGOLD='FDF6E3';
+  const pres=new PptxGenJS();
+  pres.layout='LAYOUT_16x9';
+  pres.title=pptxData.titulo;
+
+  const tema=document.getElementById('p-tema').value||'';
+  const asig=document.getElementById('p-asig').value||'';
+  const unidad=document.getElementById('p-unidad').value||'';
+
+  pptxData.slides.forEach((slide,idx)=>{
+    const s=pres.addSlide();
+    if(slide.tipo==='portada'){
+      s.background={color:NAVY};
+      s.addShape(pres.shapes.RECTANGLE,{x:0,y:0,w:0.35,h:5.625,fill:{color:GOLD},line:{color:GOLD}});
+      s.addText(asig.toUpperCase()+' · UCA · CICLO 01/2026',{x:0.6,y:0.3,w:9,h:0.35,fontSize:9,fontFace:'Arial',color:'8BAABF',charSpacing:1.5});
+      if(unidad){s.addShape(pres.shapes.RECTANGLE,{x:0.6,y:0.85,w:1.8,h:0.4,fill:{color:GOLD},line:{color:GOLD}});
+      s.addText(unidad,{x:0.6,y:0.85,w:1.8,h:0.4,fontSize:12,fontFace:'Arial',color:NAVY,bold:true,align:'center',valign:'middle'});}
+      s.addText(pptxData.titulo,{x:0.6,y:1.45,w:7,h:1.9,fontSize:32,fontFace:'Georgia',color:WHITE,bold:true,valign:'middle'});
+      if(pptxData.subtitulo)s.addText(pptxData.subtitulo,{x:0.6,y:3.5,w:7.5,h:0.5,fontSize:14,fontFace:'Georgia',color:'E8C150',italic:true});
+      s.addShape(pres.shapes.RECTANGLE,{x:0.6,y:4.2,w:3.5,h:0.04,fill:{color:GOLD},line:{color:GOLD}});
+      s.addText('Lcdo. Eduardo Colindres Otero · Catedrático · UCA',{x:0.6,y:4.4,w:9,h:0.3,fontSize:10,fontFace:'Arial',color:'8BAABF'});
+    } else if(slide.tipo==='cierre'){
+      s.background={color:NAVY};
+      s.addShape(pres.shapes.RECTANGLE,{x:0,y:4.8,w:10,h:0.825,fill:{color:NAVY2},line:{color:NAVY2}});
+      s.addShape(pres.shapes.RECTANGLE,{x:0,y:4.8,w:10,h:0.06,fill:{color:GOLD},line:{color:GOLD}});
+      s.addText(slide.titulo,{x:1,y:1.2,w:8,h:0.8,fontSize:26,fontFace:'Georgia',color:WHITE,bold:true,align:'center'});
+      if(slide.contenido&&slide.contenido.length){
+        s.addShape(pres.shapes.RECTANGLE,{x:1.5,y:2.2,w:7,h:0.06,fill:{color:GOLD},line:{color:GOLD}});
+        const bulletItems=slide.contenido.map((t,i)=>({text:t,options:{bullet:true,breakLine:i<slide.contenido.length-1}}));
+        s.addText(bulletItems,{x:1.5,y:2.4,w:7,h:2,fontSize:13,fontFace:'Georgia',color:'E8E4D8',valign:'top',paraSpaceAfter:6});
+      }
+      s.addText(asig+' · UCA · Ciclo 01/2026',{x:0.5,y:4.88,w:9,h:0.35,fontSize:10,fontFace:'Arial',color:'8BAABF',align:'center',valign:'middle'});
+    } else {
+      s.background={color:WHITE};
+      s.addShape(pres.shapes.RECTANGLE,{x:0,y:0,w:10,h:0.88,fill:{color:NAVY},line:{color:NAVY}});
+      s.addShape(pres.shapes.RECTANGLE,{x:0,y:0,w:0.48,h:0.88,fill:{color:GOLD},line:{color:GOLD}});
+      s.addText(slide.titulo,{x:0.65,y:0,w:9,h:0.88,fontSize:18,fontFace:'Arial',color:WHITE,bold:true,valign:'middle',charSpacing:.5});
+      if(slide.contenido&&slide.contenido.length){
+        const isJuris=slide.tipo==='jurisprudencia';
+        s.addShape(pres.shapes.RECTANGLE,{x:0.4,y:1.05,w:9.2,h:4.25,fill:{color:isJuris?NAVY:'E8EEF4'},line:{color:isJuris?NAVY:'E8EEF4'}});
+        if(isJuris)s.addShape(pres.shapes.RECTANGLE,{x:0.4,y:1.05,w:9.2,h:0.04,fill:{color:GOLD},line:{color:GOLD}});
+        const bulletItems=slide.contenido.map((t,i)=>({text:t,options:{bullet:true,breakLine:i<slide.contenido.length-1}}));
+        s.addText(bulletItems,{x:0.65,y:1.2,w:8.7,h:3.9,fontSize:13,fontFace:'Georgia',color:isJuris?WHITE:NAVY2,valign:'top',paraSpaceAfter:10});
+      }
+      s.addText(`${unidad||asig} · ${idx+1}/${pptxData.slides.length}`,{x:0.5,y:5.38,w:9,h:0.2,fontSize:9,fontFace:'Arial',color:'9AA8B5',align:'right'});
+    }
+  });
+
+  const nomArchivo=(tema||'presentacion').replace(/[^a-z0-9]/gi,'_').toLowerCase()+'_'+unidad.replace(/[^a-z0-9]/gi,'_').toLowerCase()+'.pptx';
+  pres.writeFile({fileName:nomArchivo});
+  status.textContent='✅ Archivo descargado: '+nomArchivo;
 }
 
 init();
